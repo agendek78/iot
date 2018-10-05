@@ -1,37 +1,32 @@
 module.exports = (sequalize, DataType) =>
 {
     const Messages = sequalize.define('Messages', {
-        id: {
-            type: DataType.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
         appEui: {
-            type: DataType.BIGINT,
+            type: DataType.CHAR(16),
             allowNull: false,
             validate: {
                 notEmpty: true
             }
         },
         devEui: {
-            type: DataType.BIGINT,
+            type: DataType.CHAR(16),
             allowNull: false,
             validate: {
                 notEmpty: true
             }
+        },
+        deviceId: {
+            type: DataType.STRING,
         },
         devClass: {
             type: DataType.TINYINT,
             allowNull: false,
             defaultValue: 0
         },
-        lifeTimeStamp: {
-            type: DataType.DATE,
-            allowNull: false
-        },
         serverDateTime: {
             type: DataType.DATE,
-            allowNull: false
+            allowNull: false,
+            defaultValue: DataType.NOW
         },
         active: {
             type: DataType.BOOLEAN,
@@ -43,11 +38,6 @@ module.exports = (sequalize, DataType) =>
             allowNull: false,
             defaultValue: 0
         },
-        eventFilter: {
-            type: DataType.TINYINT,
-            allowNull: false,
-            defaultValue: 0
-        },
         zone: {
             type: DataType.TINYINT,
             allowNull: false,
@@ -55,23 +45,19 @@ module.exports = (sequalize, DataType) =>
         },
         status: {
             type: DataType.TINYINT,
-            allowNull: false,
-            defaultValue: 0
+            allowNull: false
         },
         battery: {
             type: DataType.TINYINT,
-            allowNull: false,
-            defaultValue: 0
+            allowNull: false
         },
         gpsFix: {
             type: DataType.TINYINT,
-            allowNull: false,
-            defaultValue: 0            
+            allowNull: false
         },
         gpsSats: {
             type: DataType.TINYINT,
-            allowNull: false,
-            defaultValue: 0
+            allowNull: false
         },
         gpsHeight: {
             type: DataType.FLOAT,
@@ -112,7 +98,14 @@ module.exports = (sequalize, DataType) =>
             type: DataType.INTEGER,
             allowNull: false,
             defaultValue: 0
+        },
+        eventFilter: {
+            type: DataType.TINYINT,
+            allowNull: false,
+            defaultValue: 255
         }
+    }, {
+        timestamps: false
     });
 
     // Messages.associate = (models) =>

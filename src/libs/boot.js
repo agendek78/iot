@@ -1,7 +1,11 @@
-module.exports = (app, port) => 
+module.exports = app => 
 {
-    app.listen(port, () => 
-    {
-        console.log(`REST API on port ${port}`);
+    const port = app.get('port');
+
+    app.db.sequelize.sync().done(() => {
+        app.listen(port, () => 
+        {
+            console.log(`REST API on port ${port}`);
+        });
     });    
 }
