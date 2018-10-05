@@ -10,8 +10,9 @@ consign({
     cwd: __dirname
 })
   .include('libs/config.js')
-  .then('db.js')
+  .then('db.js')  
   .then('routes')
   .then('libs/boot.js')
+  .then('libs/helmet.js')
   .into(app)
 
