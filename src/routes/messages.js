@@ -1,15 +1,46 @@
 module.exports = app => {
     const Messages = app.db.models.Messages;
 
-    app.route('/api/constructionsites/:appEUI/messages')
-        .get((req, res) => {
-            console.log(req.params);
-            Messages.findAll({where: req.params})
+    function parseRequest(req, res, last)
+    {
+        console.log(req.params);
+
+        const sequelize = app.db.sequelize;
+        let queryParams = req.params;
+       
+        if (req.query.DevEui) queryParams.devEui = req.query.DevEui;
+
+        if (last === false)
+        {
+            Messages.findAll({where: queryParams})
                 .then( result => {
                     res.json(result)
                 })
                 .catch(err => {
                     res.status(412).json({msg: err.message})
                 });
-        });
+        }
+        else
+        {
+            if (!req.query.DevEui)
+            {
+                res.status(402).json({msg: 'DevEui required!'});
+                return;
+            }
+
+            Messages.findAll({limit: 1, order: [['id', 'DESC']], where: queryParams})
+                .then( result => {
+                    res.json(result)
+                })
+                .catch(err => {
+                    res.status(412).json({msg: err.message})
+                });
+        }
+    }
+
+    app.route('/api/constructionsites/:appEUI/messages')
+        .get((req, res) => parseRequest(req, res, false));
+
+    app.route('/api/constructionsites/:appEUI/messages/last')
+        .get((req, res) => parseRequest(req, res, true));
 }

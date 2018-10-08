@@ -35,8 +35,8 @@ module.exports = app =>
         }
     }    
 
-    app.db.sequelize.sync().done(() => {
-
+    app.db.sequelize.sync().done(() => 
+    {
         createRestServers(app);
 
         app.mqttClinet.on('connect', () => {
