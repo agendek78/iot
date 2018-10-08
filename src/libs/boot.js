@@ -1,16 +1,43 @@
 const mqtt = require('mqtt');
+const https = require("https");
+const fs = require("fs");
+const cors = require('cors');
 
 module.exports = app => 
 {
-    const port = app.get('port');
+    const config = app.libs.config;
 
-    app.mqttClinet = mqtt.connect('mqtt://13.93.80.46');
+    app.mqttClinet = mqtt.connect(config.mqttBroker);
 
-    app.db.sequelize.sync().done(() => {
+    function createRestServers(app)
+    {
+        const port = app.get('port');
+       
         app.listen(port, () => 
         {
             console.log(`REST API on port ${port}`);
         });
+
+        try
+        {
+            const options = {
+                key: fs.readFileSync(config.https.key),
+                cert: fs.readFileSync(config.https.cert)
+            };
+
+            app.use(cors())
+        
+            https.createServer(options, app).listen(port + 30);        
+        }
+        catch (err)
+        {
+            console.log(`Unable to setup HTTPS server! Error ${err.message}`);
+        }
+    }    
+
+    app.db.sequelize.sync().done(() => {
+
+        createRestServers(app);
 
         app.mqttClinet.on('connect', () => {
             console.log('Connected to MQTT broker!');
