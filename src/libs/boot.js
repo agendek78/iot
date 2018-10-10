@@ -1,7 +1,6 @@
 const mqtt = require('mqtt');
 const https = require("https");
 const fs = require("fs");
-const cors = require('cors');
 
 module.exports = app => 
 {
@@ -25,9 +24,7 @@ module.exports = app =>
                 cert: fs.readFileSync(config.https.cert)
             };
 
-            app.use(cors())
-        
-            https.createServer(options, app).listen(port + 30);        
+            https.createServer(options, app).listen(port + 30);
         }
         catch (err)
         {

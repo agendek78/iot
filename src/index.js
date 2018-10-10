@@ -1,10 +1,12 @@
 const express = require('express');
 const consign = require('consign');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.set('port', port);
+app.use(cors());
 
 consign({
     cwd: __dirname
