@@ -32,7 +32,7 @@ module.exports = app => {
                 temp1: rawMessage.readInt16LE(24) / 100.0,
                 temp2: rawMessage.readInt16LE(26) / 100.0
             },
-            rxTime: new Date(Date.parse(loraMessage.rxInfo[0].time))
+            rxTime: loraMessage.rxInfo[0].time ? new Date(Date.parse(loraMessage.rxInfo[0].time)) : new Date()
         };
     };
 };
