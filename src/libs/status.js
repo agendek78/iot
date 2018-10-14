@@ -23,12 +23,12 @@ module.exports = (app) =>
                 return StatusType.HelmetError;
             }
 
-            if (!helmetData.events.helmeton && app.libs.events.IsHelmetOffEvent(helmetData))
+            if (!helmetData.events.helmetOn && app.libs.events.IsHelmetOffEvent(helmetData))
             {
                 return StatusType.Alarm;
             }
 
-            if (!helmetData.events.helmeton && helmetData.eventsRaw != app.libs.events.EventType.None)
+            if (!helmetData.events.helmetOn && helmetData.eventsRaw != app.libs.events.EventType.None)
             {
                 return StatusType.AlarmWithHelmetOff;
             }
@@ -38,7 +38,7 @@ module.exports = (app) =>
                 return StatusType.Alarm;
             }
 
-            if (!helmetData.events.helmeton || !helmetData.events.active)
+            if (!helmetData.events.helmetOn || !helmetData.events.active)
             {
                 return StatusType.Warrning;
             }
