@@ -19,15 +19,14 @@ module.exports = (app) =>
     function IsSpecifiedEventType(helmetData)
     {
         return ((helmetData.eventsRaw & EventFilter) != 0);
-    }
+    };
 
     function IsHelmetOffEvent(helmetData)
     {
         return false;
-    }
+    };
 
-    return 
-    {
+    return {
         EventType, 
         EventFilter,
         IsSpecifiedEventType,
