@@ -33,7 +33,9 @@ module.exports = (app) =>
                 return StatusType.AlarmWithHelmetOff;
             }
 
-            if (helmetData.eventsRaw != app.libs.events.EventType.None)   
+            if (helmetData.events.hit ||
+                helmetData.events.fall ||
+                helmetData.events.tap)   
             {
                 return StatusType.Alarm;
             }
