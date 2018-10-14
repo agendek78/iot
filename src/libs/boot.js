@@ -47,7 +47,8 @@ module.exports = app =>
             console.log(json);
             //console.log(Buffer.from(json.data, 'base64'));
             const helmetData = app.libs.helmet(json);
-            
+            const zoneInfo = app.libs.zone.checkZone(json);
+
             const Messages = app.db.models.Messages;
             const record = {
                 appEui: helmetData.appEUI,
@@ -68,7 +69,8 @@ module.exports = app =>
                 temperature1: helmetData.env.temp1,
                 temperature2: helmetData.env.temp2,
                 timeStamp: helmetData.timestamp,
-                status: 0
+                zone: zoneInfo.zone,
+                status: app.libs.status.getStatus(zoneInfo, helmetData)
             };
 
             console.log(record);

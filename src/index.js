@@ -16,5 +16,8 @@ consign({
   .then('routes')
   .then('libs/boot.js')
   .then('libs/helmet.js')
+  .then('libs/zone.js')
+  .then('libs/status.js')
+  .then('libs/events.js')
   .into(app)
 
