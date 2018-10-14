@@ -7,12 +7,23 @@ module.exports = app => {
 
         const sequelize = app.db.sequelize;
         let queryParams = req.params;
-       
+
         if (req.query.DevEui) queryParams.devEui = req.query.DevEui;
 
         if (last === false)
         {
-            Messages.findAll({where: queryParams})
+	    let filterOpts = {
+		order: [['serverDateTime', 'DESC']],
+		where: queryParams
+	    };
+
+	    if (req.query.Page && req.query.PageSize)
+	    {
+		filterOpts.limit = req.query.PageSize;
+		filterOpts.offset = req.query.Page * req.query.PageSize;
+	    }
+
+            Messages.findAll(filterOpts)
                 .then( result => {
                     res.json(result)
                 })
