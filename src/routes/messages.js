@@ -72,12 +72,12 @@ module.exports = app => {
                     where: queryParams
                 })
                 .then(result => {
-                    res.json(result)
-                });
+                    res.json(result);
+                })
                 .catch(err => {
                     res.status(412).json({
                         msg: err.message
-                    })
+                    });
                 });
         }
     }
