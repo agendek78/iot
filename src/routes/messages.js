@@ -1,6 +1,7 @@
 // @ts-check
 module.exports = app => {
     const Messages = app.db.models.Messages;
+    const Op = app.db.Sequelize.Op;
 
     function parseRequest(req, res, last) {
         console.log(req.params);
@@ -12,11 +13,23 @@ module.exports = app => {
 
         if (last === false) {
             let filterOpts = {
-                order: [
-                    ['serverDateTime', 'DESC']
-                ],
+                order: [],
                 where: queryParams
             };
+
+            if (req.query.SortBy) {
+                let sortFields = req.query.SortBy.split(',');
+                console.log(sortFields);
+
+                sortFields.forEach(element => {
+                    if (element[0] === '-')
+                        filterOpts.order.push([element.substring(1, element.length), 'DESC']);
+                    else
+                        filterOpts.order.push([element, 'ASC']);
+                });
+            } else {
+                filterOpts.order.push(['serverDateTime', 'DESC']);
+            }
 
             if (req.query.Page && req.query.PageSize) {
                 filterOpts.limit = req.query.PageSize;
@@ -24,6 +37,16 @@ module.exports = app => {
                     filterOpts.offset = 0;
                 else
                     filterOpts.offset = (req.query.Page - 1) * req.query.PageSize;
+            }
+
+            if (req.query.OnlyAlarm &&
+                Boolean(req.query.OnlyAlarm) === true) {
+                filterOpts.where.zone = {
+                    [Op.ne]: app.libs.zone.ZoneType.NotMonitored
+                };
+                filterOpts.where.status = {
+                    [Op.in]: [app.libs.status.StatusType.Alarm]
+                };
             }
 
             Messages.findAll(filterOpts)

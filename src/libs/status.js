@@ -22,13 +22,14 @@ module.exports = (app) => {
                 return StatusType.Alarm;
             }
 
-            if (!helmetData.events.helmetOn && helmetData.eventsRaw != app.libs.events.EventType.None) {
-                return StatusType.AlarmWithHelmetOff;
-            }
+            // if (!helmetData.events.helmetOn && helmetData.eventsRaw != app.libs.events.EventType.None) {
+            //     return StatusType.AlarmWithHelmetOff;
+            // }
 
             if (helmetData.events.hit ||
                 helmetData.events.fall ||
-                helmetData.events.tap) {
+                helmetData.events.tap ||
+                helmetData.events.button) {
                 return StatusType.Alarm;
             }
 
