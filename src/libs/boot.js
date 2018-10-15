@@ -1,39 +1,33 @@
+// @ts-check
 const mqtt = require('mqtt');
 const https = require("https");
 const fs = require("fs");
 
-module.exports = app => 
-{
+module.exports = app => {
     const config = app.libs.config;
 
     app.mqttClinet = mqtt.connect(config.mqttBroker);
 
-    function createRestServers(app)
-    {
+    function createRestServers(app) {
         const port = app.get('port');
-       
-        app.listen(port, () => 
-        {
+
+        app.listen(port, () => {
             console.log(`REST API on port ${port}`);
         });
 
-        try
-        {
+        try {
             const options = {
                 key: fs.readFileSync(config.https.key),
                 cert: fs.readFileSync(config.https.cert)
             };
 
             https.createServer(options, app).listen(port + 30);
-        }
-        catch (err)
-        {
+        } catch (err) {
             console.log(`Unable to setup HTTPS server! Error ${err.message}`);
         }
-    }    
+    }
 
-    app.db.sequelize.sync().done(() => 
-    {
+    app.db.sequelize.sync().done(() => {
         createRestServers(app);
 
         app.mqttClinet.on('connect', () => {
@@ -43,7 +37,7 @@ module.exports = app =>
 
         app.mqttClinet.on('message', (topic, message) => {
             console.log(`Message from ${topic}, len ${message.length}`);
-            const json = JSON.parse(message.toString()); 
+            const json = JSON.parse(message.toString());
             console.log(json);
             //console.log(Buffer.from(json.data, 'base64'));
             const helmetData = app.libs.helmet(json);
@@ -77,5 +71,5 @@ module.exports = app =>
             Messages.create(record);
             //.catch( err => console.lo)
         });
-    });    
+    });
 }

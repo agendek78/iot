@@ -1,7 +1,5 @@
-module.exports = (app) =>
-{
-    const EventType =
-    {
+module.exports = (app) => {
+    const EventType = {
         None: 0,
         Hit: 1,
         Fall: 2,
@@ -16,18 +14,16 @@ module.exports = (app) =>
 
     let EventFilter = EventType.All;
 
-    function IsSpecifiedEventType(helmetData)
-    {
+    function IsSpecifiedEventType(helmetData) {
         return ((helmetData.eventsRaw & EventFilter) != 0);
     };
 
-    function IsHelmetOffEvent(helmetData)
-    {
+    function IsHelmetOffEvent(helmetData) {
         return false;
     };
 
     return {
-        EventType, 
+        EventType,
         EventFilter,
         IsSpecifiedEventType,
         IsHelmetOffEvent

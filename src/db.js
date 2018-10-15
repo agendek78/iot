@@ -4,21 +4,19 @@ const path = require('path');
 
 let db = null;
 
-module.exports = app => 
-{
+module.exports = app => {
     const config = app.libs.config;
 
     console.log(config);
 
-    if (!db)
-    {
+    if (!db) {
         const sequelize = new Sequelize(
             config.database,
             config.username,
             config.password,
             config.params);
 
-        db  = {
+        db = {
             sequelize,
             Sequelize,
             models: {}

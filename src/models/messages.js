@@ -1,5 +1,4 @@
-module.exports = (sequalize, DataType) =>
-{
+module.exports = (sequalize, DataType) => {
     const Messages = sequalize.define('Messages', {
         appEui: {
             type: DataType.CHAR(16),
@@ -62,7 +61,7 @@ module.exports = (sequalize, DataType) =>
         gpsHeight: {
             type: DataType.FLOAT,
             allowNull: false,
-            defaultValue: 0.0            
+            defaultValue: 0.0
         },
         helmetOn: {
             type: DataType.BOOLEAN,
@@ -72,27 +71,27 @@ module.exports = (sequalize, DataType) =>
         latitude: {
             type: DataType.FLOAT,
             allowNull: false,
-            defaultValue: 0.0            
+            defaultValue: 0.0
         },
         longitude: {
             type: DataType.FLOAT,
             allowNull: false,
-            defaultValue: 0.0            
+            defaultValue: 0.0
         },
         pressure: {
             type: DataType.FLOAT,
             allowNull: false,
-            defaultValue: 0.0            
+            defaultValue: 0.0
         },
         temperature1: {
             type: DataType.FLOAT,
             allowNull: false,
-            defaultValue: 0.0            
+            defaultValue: 0.0
         },
         temperature2: {
             type: DataType.FLOAT,
             allowNull: false,
-            defaultValue: 0.0            
+            defaultValue: 0.0
         },
         timeStamp: {
             type: DataType.INTEGER,

@@ -1,8 +1,8 @@
+// @ts-check
 module.exports = app => {
     const Messages = app.db.models.Messages;
 
-    function parseRequest(req, res, last)
-    {
+    function parseRequest(req, res, last) {
         console.log(req.params);
 
         const sequelize = app.db.sequelize;
@@ -10,41 +10,53 @@ module.exports = app => {
 
         if (req.query.DevEui) queryParams.devEui = req.query.DevEui;
 
-        if (last === false)
-        {
-	    let filterOpts = {
-		order: [['serverDateTime', 'DESC']],
-		where: queryParams
-	    };
+        if (last === false) {
+            let filterOpts = {
+                order: [
+                    ['serverDateTime', 'DESC']
+                ],
+                where: queryParams
+            };
 
-	    if (req.query.Page && req.query.PageSize)
-	    {
-		filterOpts.limit = req.query.PageSize;
-		filterOpts.offset = req.query.Page * req.query.PageSize;
-	    }
+            if (req.query.Page && req.query.PageSize) {
+                filterOpts.limit = req.query.PageSize;
+                if (req.query.Page < 1)
+                    filterOpts.offset = 0;
+                else
+                    filterOpts.offset = (req.query.Page - 1) * req.query.PageSize;
+            }
 
             Messages.findAll(filterOpts)
-                .then( result => {
+                .then(result => {
                     res.json(result)
                 })
                 .catch(err => {
-                    res.status(412).json({msg: err.message})
+                    res.status(412).json({
+                        msg: err.message
+                    })
                 });
-        }
-        else
-        {
-            if (!req.query.DevEui)
-            {
-                res.status(402).json({msg: 'DevEui required!'});
+        } else {
+            if (!req.query.DevEui) {
+                res.status(402).json({
+                    msg: 'DevEui required!'
+                });
                 return;
             }
 
-            Messages.findAll({limit: 1, order: [['id', 'DESC']], where: queryParams})
-                .then( result => {
+            Messages.findAll({
+                    limit: 1,
+                    order: [
+                        ['id', 'DESC']
+                    ],
+                    where: queryParams
+                })
+                .then(result => {
                     res.json(result)
                 })
                 .catch(err => {
-                    res.status(412).json({msg: err.message})
+                    res.status(412).json({
+                        msg: err.message
+                    })
                 });
         }
     }
