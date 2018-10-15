@@ -33,11 +33,11 @@ module.exports = (app) => {
                 return StatusType.Alarm;
             }
 
-            if (!helmetData.events.helmetOn || !helmetData.events.active) {
-                return StatusType.Warrning;
-            }
+            //if (!helmetData.events.helmetOn || !helmetData.events.active) {
+            //    return StatusType.Warrning;
+            //}
 
-            if (helmetData.gpsInfo.gpsFix != 0) {
+            if (helmetData.gpsInfo.gpsFix == 0) {
                 return StatusType.NoFix;
             }
 

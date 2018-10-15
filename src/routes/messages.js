@@ -35,7 +35,10 @@ module.exports = app => {
                     filterOpts.offset = 0;
                 else
                     filterOpts.offset = (req.query.Page - 1) * req.query.PageSize;
-            }
+            } else {
+		filterOpts.limit = 100;
+		filterOpts.offset = 0;
+	    }
 
             if (req.query.OnlyAlarm &&
                 req.query.OnlyAlarm.toLowerCase() == 'true') {
