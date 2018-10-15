@@ -4,7 +4,6 @@ module.exports = app => {
     const Op = app.db.Sequelize.Op;
 
     function parseRequest(req, res, last) {
-        console.log(req.params);
 
         const sequelize = app.db.sequelize;
         let queryParams = req.params;
@@ -40,7 +39,6 @@ module.exports = app => {
 
             if (req.query.OnlyAlarm &&
                 req.query.OnlyAlarm.toLowerCase() == 'true') {
-                console.log(Boolean(req.query.OnlyAlarm));
                 filterOpts.where.zone = {
                     [Op.ne]: app.libs.zone.ZoneType.NotMonitored
                 };
@@ -75,7 +73,7 @@ module.exports = app => {
                 })
                 .then(result => {
                     res.json(result)
-                })
+                });
                 .catch(err => {
                     res.status(412).json({
                         msg: err.message

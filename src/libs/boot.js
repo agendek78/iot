@@ -1,7 +1,7 @@
 // @ts-check
 const mqtt = require('mqtt');
-const https = require("https");
-const fs = require("fs");
+const https = require('https');
+const fs = require('fs');
 
 module.exports = app => {
     const config = app.libs.config;
@@ -38,7 +38,7 @@ module.exports = app => {
         app.mqttClinet.on('message', (topic, message) => {
             console.log(`Message from ${topic}, len ${message.length}`);
             const json = JSON.parse(message.toString());
-            console.log(json);
+            //console.log(json);
             //console.log(Buffer.from(json.data, 'base64'));
             const helmetData = app.libs.helmet(json);
             const zoneInfo = app.libs.zone.checkZone(json);
@@ -67,7 +67,6 @@ module.exports = app => {
                 status: app.libs.status.getStatus(zoneInfo, helmetData)
             };
 
-            console.log(record);
             Messages.create(record);
             //.catch( err => console.lo)
         });
