@@ -40,7 +40,7 @@ module.exports = app => {
 
             if (req.query.OnlyAlarm &&
                 req.query.OnlyAlarm.toLowerCase() == 'true') {
-                    console.log (Boolean(req.query.OnlyAlarm) );
+                console.log(Boolean(req.query.OnlyAlarm));
                 filterOpts.where.zone = {
                     [Op.ne]: app.libs.zone.ZoneType.NotMonitored
                 };

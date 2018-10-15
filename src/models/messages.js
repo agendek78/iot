@@ -104,7 +104,12 @@ module.exports = (sequalize, DataType) => {
             defaultValue: 255
         }
     }, {
-        timestamps: false
+        timestamps: false,
+        indexes: [{
+            name: 'search_by_dev_app',
+            method: 'BTREE',
+            fields: ['appEui', 'devEui']
+        }]
     });
 
     // Messages.associate = (models) =>
