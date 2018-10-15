@@ -19,7 +19,6 @@ module.exports = app => {
 
             if (req.query.SortBy) {
                 let sortFields = req.query.SortBy.split(',');
-                console.log(sortFields);
 
                 sortFields.forEach(element => {
                     if (element[0] === '-')
@@ -32,7 +31,7 @@ module.exports = app => {
             }
 
             if (req.query.Page && req.query.PageSize) {
-                filterOpts.limit = req.query.PageSize;
+                filterOpts.limit = Number(req.query.PageSize);
                 if (req.query.Page < 1)
                     filterOpts.offset = 0;
                 else
@@ -40,7 +39,8 @@ module.exports = app => {
             }
 
             if (req.query.OnlyAlarm &&
-                Boolean(req.query.OnlyAlarm) === true) {
+                req.query.OnlyAlarm.toLowerCase() == 'true') {
+                    console.log (Boolean(req.query.OnlyAlarm) );
                 filterOpts.where.zone = {
                     [Op.ne]: app.libs.zone.ZoneType.NotMonitored
                 };
