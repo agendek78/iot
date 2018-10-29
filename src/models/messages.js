@@ -102,7 +102,12 @@ module.exports = (sequalize, DataType) => {
             type: DataType.TINYINT,
             allowNull: false,
             defaultValue: 255
-        }
+        },
+        handled: {
+            type: DataType.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        }        
     }, {
         timestamps: false,
         indexes: [{

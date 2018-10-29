@@ -90,4 +90,27 @@ module.exports = app => {
 
     app.route('/api/constructionsites/:appEUI/messages/last')
         .get((req, res) => parseRequest(req, res, true));
+
+    app.route('/api/constructionsites/handle')
+        .post((req, res) => 
+        {
+            if (!req.query.id)
+            {
+                res.status(402).json({
+                    msg: 'id required!'
+                });                
+            }        
+            else
+            {
+                Messages.update({handled: true}, {where: {id: req.query.id}})
+                    .then(result => 
+                    {
+                        res.status(200).json({msg: 'OK'});
+                    })
+                    .catch(err =>
+                    {
+                        res.status(404).json({msg: err.message});
+                    });
+            }
+        });
 }
