@@ -10,7 +10,17 @@ module.exports = app => {
 
         if (req.query.DevEui) queryParams.devEui = req.query.DevEui;
 
-        if (last === false) {
+        if (req.query.id) {
+            Messages.findAll({where: {id: req.query.id}})
+                .then(result => {
+                    res.json(result);
+                })
+                .catch(err => {
+                    res.status(412).json({
+                        msg: err.message
+                    });
+                });            
+        } else if (last === false) {
             let filterOpts = {
                 order: [],
                 where: queryParams
@@ -36,9 +46,9 @@ module.exports = app => {
                 else
                     filterOpts.offset = (req.query.Page - 1) * req.query.PageSize;
             } else {
-		filterOpts.limit = 100;
-		filterOpts.offset = 0;
-	    }
+                filterOpts.limit = 100;
+                filterOpts.offset = 0;
+            }
 
             if (req.query.OnlyAlarm &&
                 req.query.OnlyAlarm.toLowerCase() == 'true') {
@@ -50,14 +60,19 @@ module.exports = app => {
                 };
             }
 
+            if (req.query.OnlyUnhandled &&
+                req.query.OnlyUnhandled.toLowerCase() == 'true') {
+                filterOpts.where.handled = { [Op.eq]: false};
+            }
+
             Messages.findAll(filterOpts)
                 .then(result => {
-                    res.json(result)
+                    res.json(result);
                 })
                 .catch(err => {
                     res.status(412).json({
                         msg: err.message
-                    })
+                    });
                 });
         } else {
             if (!req.query.DevEui) {
@@ -68,12 +83,12 @@ module.exports = app => {
             }
 
             Messages.findAll({
-                    limit: 1,
-                    order: [
-                        ['id', 'DESC']
-                    ],
-                    where: queryParams
-                })
+                limit: 1,
+                order: [
+                    ['id', 'DESC']
+                ],
+                where: queryParams
+            })
                 .then(result => {
                     res.json(result);
                 })
@@ -103,7 +118,7 @@ module.exports = app => {
             else
             {
                 Messages.update({handled: true}, {where: {id: req.query.id}})
-                    .then(result => 
+                    .then(() => 
                     {
                         res.status(200).json({msg: 'OK'});
                     })
