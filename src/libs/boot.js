@@ -2,6 +2,7 @@
 const mqtt = require('mqtt');
 const https = require('https');
 const fs = require('fs');
+const axios = require('axios');
 
 module.exports = app => {
     const config = app.libs.config;
@@ -63,11 +64,20 @@ module.exports = app => {
                 temperature1: helmetData.env.temp1,
                 temperature2: helmetData.env.temp2,
                 timeStamp: helmetData.timestamp,
-                zone: zoneInfo.zone,
+                zone : zoneInfo.zone,
                 status: app.libs.status.getStatus(zoneInfo, helmetData)
             };
 
             Messages.create(record);
+            axios.post('http://iot1.ddns.net:5055', {
+		id:  helmetData.deviceId,
+		timestamp: helmetData.timestamp,
+		lat: helmetData.gpsInfo.latitude,
+		lon: helmetData.gpsInfo.longitude
+	    })
+	    .catch((err) => {
+		console.error(err)
+   	    })
             //.catch( err => console.lo)
         });
     });

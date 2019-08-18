@@ -8,7 +8,6 @@ module.exports = {
         define: {
             underscore: true
         },
-        operatorsAliases: false,
         logging: false
     },
     //mqttBroker: 'mqtt://13.93.80.46',
