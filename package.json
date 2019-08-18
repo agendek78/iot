@@ -17,6 +17,7 @@
     "event-stream": "^3.3.4",
     "express": "^4.16.3",
     "mqtt": "^2.18.8",
+    "mqtt-packet": "^6.2.1",
     "sequelize": "^6.0.0",
     "sqlite3": "^4.0.2"
   },
