@@ -3,11 +3,13 @@ const mqtt = require('mqtt');
 const https = require('https');
 const fs = require('fs');
 const axios = require('axios');
+const WebSocket = require('ws');
 
 module.exports = app => {
     const config = app.libs.config;
 
     app.mqttClinet = mqtt.connect(config.mqttBroker);
+    app.wss = new WebSocket.Server(config.wsParams);
 
     function createRestServers(app) {
         const port = app.get('port');
@@ -78,6 +80,12 @@ module.exports = app => {
 	    .catch((err) => {
 		console.error(err)
    	    })
+
+	    app.wss.clients.forEach(function each(client) {
+      		if (client !== ws && client.readyState === WebSocket.OPEN) {
+        	    client.send(JSON.stringify(helmetData));
+      		}
+    	    });
             //.catch( err => console.lo)
         });
     });

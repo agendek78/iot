@@ -17,4 +17,7 @@ module.exports = {
         key: '/etc/letsencrypt/live/demo.connectyourworker.com/privkey.pem',
         cert: '/etc/letsencrypt/live/demo.connectyourworker.com/fullchain.pem'
     },
+    wsParams: {
+	port: 3040
+    },
 };
