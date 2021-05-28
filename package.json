@@ -20,7 +20,7 @@
     "mqtt-packet": "^6.2.1",
     "sequelize": "^6.0.0",
     "sqlite3": "^4.0.2",
-    "ws": "^7.1.2"
+    "ws": "^7.4.5"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
