@@ -15,7 +15,7 @@
     "consign": "^0.1.6",
     "cors": "^2.8.4",
     "event-stream": "^3.3.4",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "mqtt": "^2.18.8",
     "mqtt-packet": "^6.2.1",
     "sequelize": "^6.0.0",
